@@ -1,0 +1,45 @@
+{{ define "main" }}
+
+<article class="post">
+    <header>
+        <h2>{{ .Title }}</h2>
+        <p class="fw-light fs-5">{{ .Params.Author }}</p>
+
+        <p class="fw-lighter">Publicado el {{ .Date.Format "January 2, 2006" }} en
+
+
+        <span class="categories">
+                {{ range .Params.categories }}
+            <a class="tag text-warning stretched-link" href="/categories/{{ . | urlize }}"><button type="button" class="btn btn-sm btn-light">{{ . }}</button></a>
+                {{ end }}
+        </span>
+        <br>
+
+        <span class="fw-lighter fst-italic">Tiempo de lectura: {{ math.Round (div (countwords .Content) 200.0) }} min.</span></p>
+    </header>
+
+    <section class="body">
+        {{ .Content }}
+        <p class="fw-light fs-6">
+            <span class="tags">
+                {{ range .Params.tags }}
+            <a class="tag text-dark" href="/tags/{{ . | urlize }}"><button type="button" class="btn btn-light btn-sm"># {{ . }}</button></a>
+                {{ end }}
+        </span>
+        </p>
+    </section>
+
+    <hr class="mt-5 mb-3">
+
+    <section class="comments">
+        <h6>Comentarios</h6>
+        {{ if .Params.disableComments }}
+            <p>Los comentarios están deshabilitados para este post.</p>
+        {{ else }}
+            {{ template "_internal/disqus.html" . }}
+        {{ end }}
+    </section>
+
+</article>
+
+{{ end }}
